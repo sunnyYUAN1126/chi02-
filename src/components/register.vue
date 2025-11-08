@@ -1,41 +1,63 @@
 <script setup>
 import { ref } from "vue"
 
-const login_message = ref("Hello")
+// 宣告可以往父層發出事件
+const emit = defineEmits(["register-success"])
+
+const username = ref("")
+const email = ref("")
+const department = ref("")
+const studentId = ref("")
+const password = ref("")
+
+function handleRegister() {
+  // 這裡可以先做一些基本檢查
+  if (!username.value || !email.value || !department.value || !studentId.value || !password.value) {
+    alert("請填寫完整註冊資料！")
+    return
+  }
+
+  // 假裝成功註冊  alert() 是 JavaScript 內建的「彈出通知視窗」
+  alert("註冊成功！請登入。")
+
+  // 通知父層回到登入畫面
+  emit("register-success")
+}
 </script>
 
 <template>
-    <div class="register_container">
-        <nav class="menu">
-          <div>
-            <h1>註冊新帳號</h1>
-          </div>
-          <div class="input-group">
-            <h2>帳號 </h2><input type="text" >      
-          </div>
-          <div class="input-group">
-            <h2>電子郵件  </h2>  <input type="password" >        
-          </div>
-          <div class="input-group">
-            <h2>系所 </h2>  <input type="password" >         
-          </div>
-          <div class="input-group">
-            <h2>學號 </h2> <input type="password" >          
-          </div>
-          <div class="input-group">
-            <h2>密碼 </h2> <input type="password" >         
-          </div>
-          <div>
-            <button>登入</button>
-          </div>
-          
-        
+  <div class="register_container">
+    <h2>註冊新帳號</h2>
 
-        </nav>
+    <div class="input-group">
+      <p>帳號</p>
+      <input type="text" v-model="username" />
     </div>
 
+    <div class="input-group">
+      <p>電子郵件</p>
+      <input type="text" v-model="email" />
+    </div>
 
+    <div class="input-group">
+      <p>系所</p>
+      <input type="text" v-model="department" />
+    </div>
 
+    <div class="input-group">
+      <p>學號</p>
+      <input type="text" v-model="studentId" />
+    </div>
+
+    <div class="input-group">
+      <p>密碼</p>
+      <input type="password" v-model="password" />
+    </div>
+
+    <div>
+      <button @click="handleRegister">註冊</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -45,45 +67,30 @@ const login_message = ref("Hello")
     list-style: none;
 }
 
-/* ------------------------------------------ */
-
-.register_container{
-  width: 400px;
-  height: 600px;
-  border-radius: 50px;
-  background: pink;
-
-  display: flex;
-  justify-content: center; /* 水平置中 */
-  align-items: center;     /* 垂直置中 */
-  margin: 0 auto;          /* 整個容器在畫面中水平置中 */
-}
-.register_container>.menu{
-  display: inline-block;
-  text-align: center; /* 讓裡面的內容也置中 */
-}
-.register_container>.menu>.input-group{
+.register_container div{
   display: flex;
   padding: 10px;
+  margin: 20px;
 }
-.register_container>.menu>.input-group>h2{
+.register_container p{
   width: 100px;
+  background: palegoldenrod;
+  text-align: center;
 }
-.register_container>.menu input{
-  height: 30px;
+.register_container input{
+  height: 20px;
 }
 .register_container button{
-  width: 100px;
-  height: 50px;
-  border: 3px solid black;
-  border-radius: 40px;
-  margin: 50px 0 0;
+  width: 50px;
+  height: 30px;
+  border-radius: 20px;
 }
 .register_container button:hover{
+  color: white;
   background: black;
-  color: aliceblue;
-  border: 3px solid white;
+
 }
+
 
 
 

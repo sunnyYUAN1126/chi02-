@@ -1,16 +1,14 @@
 <script setup>
 import { ref } from "vue"
-import login from './components/login.vue'
-import register from "./components/register.vue"
-import home from "./components/home.vue"
+import Login from './components/login.vue'
+import Register from "./components/register.vue"
+import Home from "./components/home.vue"
 
-const message = ref("Hello")
-
-// 控制目前顯示哪個畫面：home、login、register
-const currentPage = ref("home")
+const currentPage = ref("home") // 預設顯示首頁
+const isLoggedIn = ref(false)   // 是否登入的狀態（false=未登入）
 
 // 三個切換方法
-function showLogoPage() {
+function showHomePage() {
   currentPage.value = "home";
 }
 function showLoginPage() {
@@ -19,31 +17,40 @@ function showLoginPage() {
 function showRegisterPage() {
   currentPage.value = "register";
 }
-
-
-
+// 登出
+function logout() {
+  isLoggedIn.value = false;  
+  currentPage.value = "home";
+}
 </script>
 
 <template>
-   <div class="container">
-        <nav class="menu">
-            <div class="logo" @click="showLogoPage">二手書系統</div>
-            <ul>
-                <li class="menu_item">購物車</li>
-                <li class="menu_item" @click="showLoginPage">登入</li>
-                <li class="menu_item" @click="showRegisterPage">註冊</li>
-            </ul>
-        </nav>
-    </div>
+  <div class="container">
+    <nav class="menu">
+      <div class="logo" @click="showHomePage">二手書系統</div>
+      <ul>
+        <li class="menu_item">購物車</li>
 
-  <home v-if="currentPage === 'home'" />  
-  <login v-else-if="currentPage === 'login'" />
-  <register v-else-if="currentPage === 'register'" />
+        <!-- 如果已登入，顯示登出 -->
+        <li v-if="isLoggedIn" class="menu_item" @click="logout">登出</li>
 
-  <h1>{{ message }}</h1>
-  <h1>{{ message }}</h1>
+        <!-- 如果沒登入，顯示登入、註冊 -->
+        <template v-else>
+          <li class="menu_item" @click="showLoginPage">登入</li>
+          <li class="menu_item" @click="showRegisterPage">註冊</li>
+        </template>
+      </ul>
+    </nav>
+  </div>
 
-
+  <!-- 根據 currentPage 顯示不同畫面 -->
+  <Home v-if="currentPage === 'home'" />  
+  <Login 
+    v-else-if="currentPage === 'login'" 
+    @login-success="isLoggedIn = true; currentPage = 'home';" 
+  />
+  <Register v-else-if="currentPage === 'register'"
+  @register-success="currentPage = 'login'"  />
 </template>
 
 <style scoped>

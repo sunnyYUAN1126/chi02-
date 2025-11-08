@@ -1,29 +1,37 @@
 <script setup>
 import { ref } from "vue"
 
-const login_message = ref("Hello")
+// emit 是 Vue 3 用來發出事件的方法
+const emit = defineEmits(["login-success"])
+
+const username = ref("")
+const password = ref("")
+
+function handleLogin() {
+  // 簡單模擬登入檢查
+  if (username.value && password.value) {
+    emit("login-success") // 通知父層登入成功
+  } else {
+    alert("請輸入帳號和密碼！")
+  }
+}
 </script>
 
 <template>
-    <div class="loging_container">
-        <nav class="menu">
-          <div>
-            <h1>會員登入</h1>
-          </div> 
-          <div>
-            <h2>帳號 <input type="text" ></h2>      
-          </div>
-          <div>
-            <h2>密碼 <input type="password" ></h2>           
-          </div>
-          <div>
-            <button>登入</button>
-          </div>
-        </nav>
+  <div class="login_container">
+    <h2>會員登入</h2>
+    <div>
+      <p>帳號</p>
+      <input type="text" v-model="username" />      
     </div>
-
-
-
+    <div>
+      <p>密碼</p>
+      <input type="password" v-model="password" />       
+    </div>
+    <div>
+      <button @click="handleLogin">登入</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -33,39 +41,30 @@ const login_message = ref("Hello")
     list-style: none;
 }
 
-/* ------------------------------------------ */
-
-.loging_container{
-  width: 300px;
-  height: 400px;
-  border-radius: 50px;
-  background-color: pink;
-
+.login_container div{
   display: flex;
-  justify-content: center; /* 水平置中 */
-  align-items: center;     /* 垂直置中 */
-  margin: 0 auto;          /* 整個容器在畫面中水平置中 */
+  padding: 10px;
+  margin: 20px;
 }
-.loging_container>.menu{
-  display: inline-block;
-  text-align: center; /* 讓裡面的內容也置中 */
-}
-.loging_container>.menu>div{
-  padding: 20px;
-}
-.loging_container>.menu input{
-  height: 30px;
-}
-.loging_container button{
+.login_container p{
   width: 100px;
-  height: 50px;
-  border-radius: 40px;
+  background: palegoldenrod;
+  text-align: center;
 }
-.loging_container button:hover{
-  background: black;
-  color: aliceblue;
-}
+.login_container input{
+  height: 20px;
 
+}
+.login_container button{
+  width: 50px;
+  height: 30px;
+  border-radius: 20px;
+}
+.login_container button:hover{
+  color: white;
+  background: black;
+
+}
 
 
 </style>
