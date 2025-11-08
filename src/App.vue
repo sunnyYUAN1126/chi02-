@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from "vue"
-import Login from './components/login.vue'
-import Register from "./components/register.vue"
-import Home from "./components/home.vue"
+import Login from './components/Menue/login.vue'
+import Register from "./components/Menue/register.vue"
+import Home from "./components/Menue/home.vue"
+import Shopping_cart from "./components/Menue/shopping_cart.vue"
 
 const currentPage = ref("home") // 預設顯示首頁
 const isLoggedIn = ref(false)   // 是否登入的狀態（false=未登入）
@@ -22,6 +23,11 @@ function logout() {
   isLoggedIn.value = false;  
   currentPage.value = "home";
 }
+
+//購物車
+function showShoppingCartPage() {
+  currentPage.value = "shopping_cart";
+}
 </script>
 
 <template>
@@ -29,15 +35,18 @@ function logout() {
     <nav class="menu">
       <div class="logo" @click="showHomePage">二手書系統</div>
       <ul>
-        <li class="menu_item">購物車</li>
+        <li @click="showShoppingCartPage">購物車</li>
 
         <!-- 如果已登入，顯示登出 -->
-        <li v-if="isLoggedIn" class="menu_item" @click="logout">登出</li>
+        <template v-if="isLoggedIn">
+          <li @click="logout">登出</li>
+          <li @click="">會員專區</li>
+        </template>
 
         <!-- 如果沒登入，顯示登入、註冊 -->
-        <template v-else>
-          <li class="menu_item" @click="showLoginPage">登入</li>
-          <li class="menu_item" @click="showRegisterPage">註冊</li>
+        <template v-else class="menu_item">
+          <li @click="showLoginPage">登入</li>
+          <li @click="showRegisterPage">註冊</li>
         </template>
       </ul>
     </nav>
@@ -45,12 +54,20 @@ function logout() {
 
   <!-- 根據 currentPage 顯示不同畫面 -->
   <Home v-if="currentPage === 'home'" />  
+  <Shopping_cart v-if="currentPage === 'shopping_cart'" /> 
   <Login 
     v-else-if="currentPage === 'login'" 
     @login-success="isLoggedIn = true; currentPage = 'home';" 
   />
   <Register v-else-if="currentPage === 'register'"
   @register-success="currentPage = 'login'"  />
+
+
+
+
+
+
+  
 </template>
 
 <style scoped>
@@ -64,7 +81,7 @@ function logout() {
     background: plum;
     padding: 0 50px;
 }
-.menu {
+.container .menu {
     /* width: 100%;
     height: 100px; */
     background: plum;
@@ -75,26 +92,20 @@ function logout() {
     padding: 0 20px;
     align-items: center; /*控制垂直對其*/
 }
-.logo{
+.container .logo{
     color: black;
     font-size: 50px;
     padding: 10px 0px;
 }
-.logo:hover,.container .menu_item:hover{
+.container .logo:hover,.container li:hover{
   color: aliceblue;
 }
 
-.menu>ul{
+.container ul{
     display: flex; 
-    /* align-items:flex-end;  */
-    gap: 20px;
+    gap: 10px;
 }
-.menu_item{
-    /* width: 200px; */
-    color: black;
-    line-height: 60px;
-    font-size: 20px;
-}
+
 
 /* ------------------------------------------ */
 
