@@ -47,11 +47,16 @@ function handleSwitchPage(page) {
     <nav class="menu">
       <div class="logo" @click="showHomePage">二手書系統</div>
       <ul>
-        
-
         <!-- 如果已登入，顯示登出 -->
         <template v-if="isLoggedIn">
-          <li @click="showShoppingCartPage">購物車</li>
+          <!-- 👇 只有當不是賣家頁面時才顯示購物車 -->
+          <li 
+            v-if="currentPage !== 'seller'" 
+            @click="showShoppingCartPage"
+          >
+            購物車
+          </li>
+
           <li @click="logout">登出</li>
           <li @click="showMemberAreaPage">會員專區</li>
         </template>
@@ -74,13 +79,16 @@ function handleSwitchPage(page) {
   />  
   <Seller_menue 
     v-if="currentPage === 'seller'" 
-    @switchPage="handleSwitchPage"/>
+    @switchPage="handleSwitchPage"
+  />
   <Login 
     v-else-if="currentPage === 'login'" 
     @login-success="isLoggedIn = true; currentPage = 'home';" 
   />
-  <Register v-else-if="currentPage === 'register'"
-  @register-success="currentPage = 'login'"  />
+  <Register 
+    v-else-if="currentPage === 'register'"
+    @register-success="currentPage = 'login'"  
+  />
 
 
 

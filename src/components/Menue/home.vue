@@ -1,5 +1,5 @@
 <script setup>
-
+import product from './product.vue';
 
 </script>
 
@@ -15,18 +15,10 @@
                 <li class="menu_item">自然</li>
             </ul>
         </nav>
-
-        <nav class="menu3">
-          <div>
-            <p>框框</p>
-          </div>
-          <div>
-            <p>框框</p>
-          </div>
-          <div>
-            <p>框框</p>
-          </div>
-        </nav>     
+        
+        
+        <product />
+        
     </div>
      
 
