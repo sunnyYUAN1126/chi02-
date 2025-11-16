@@ -15,11 +15,16 @@ function handleLogin() {
     alert("請輸入帳號和密碼！")
   }
 }
+
+function handleRegister() {
+    emit("login-Register") // 通知父層登入成功
+
+}
 </script>
 
 <template>
   <div class="login_container">
-    <h2>會員登入</h2>
+    <h2>會員登入0</h2>
     <div>
       <p>帳號</p>
       <input type="text" v-model="username" />      
@@ -31,7 +36,11 @@ function handleLogin() {
     <div>
       <button @click="handleLogin">登入</button>
     </div>
+    <div>
+      <button @click="handleRegister">註冊</button>
+    </div>
   </div>
+  
 
   
 
@@ -44,11 +53,15 @@ function handleLogin() {
     margin: 0;
     list-style: none;
 }
+.login_container{
+  margin: 100px;
+}
 
 .login_container div{
   display: flex;
   padding: 10px;
   margin: 20px;
+
 }
 .login_container p{
   width: 100px;

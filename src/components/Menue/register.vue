@@ -66,6 +66,9 @@ function handleRegister() {
     margin: 0;
     list-style: none;
 }
+.register_container{
+  margin: 100px;
+}
 
 .register_container div{
   display: flex;

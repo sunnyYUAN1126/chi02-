@@ -1,76 +1,70 @@
 <script setup>
-import product from './product.vue';
+import product from './products.vue';
 
 </script>
 
 <template>
-       <div class="container2" >
-        <nav class="menu2">
-          <h3>商品分類</h3>
-            <ul>
-                <li class="menu_item">所有</li>
-                <li class="menu_item">語言</li>
-                <li class="menu_item">社會</li>
-                <li class="menu_item">理工</li>
-                <li class="menu_item">自然</li>
-            </ul>
-        </nav>
-        
-        
-        <product />
-        
+  <nav class="navbar bg-body-tertiary  navbar-expand-lg bg-body-tertiary fixed-top second-nav">
+    <div class="container-fluid">
+      <a class="navbar-brand">Let's go~</a>
+
+
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#">ALL</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">語言</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">社會</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">理工</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">自然</a>
+      </li>
+    </ul>          
+    
+
+    <form class="d-flex" role="search">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+      <button class="btn btn-outline-success" type="submit">
+        <i class="bi bi-search"></i>
+      </button>
+    </form>
+
     </div>
-     
+  </nav>
+
+  <product/>
+
+             
+
 
 
 </template>
 
+
 <style scoped>
-*{
-    padding: 0;
-    margin: 0;
-    list-style: none;
+.nav-link {
+  color: rgb(0, 0, 0) !important;
+}
+.active{
+  background: rgb(216, 210, 211) !important;
+}
+.nav-link:hover {
+  background-color: rgb(216, 210, 211) !important; /* 可改成喜歡的顏色 */
+  color: rgb(0, 0, 0) !important;
+  font-weight: bold;
 }
 
-.container2{
-  display: flex;
-}
-.menu3{
-  margin: 10px;
-  display: flex;
-  
-}
-.menu3 div{
-  border: 1px solid gray;
-  width: 200px;
 
-  background: rgb(243, 239, 239);
-  border-radius: 10px;
-  margin: 30px;
+.second-nav {
+  top: 80px;  /* 第一個 nav 的高度 */
 }
-/* ------- */
-
-.menu2{
-  background: rgb(211, 211, 211);
-  padding: 2px;
-  width: 100px;
-  text-align: center;
-}
-.menu2>ul>.menu_item{
-  border: 1px solid plum;
-}
-.menu2>ul>.menu_item:hover {
-  background-color: pink; /* 滑鼠移過來會變色 */
-}
-.menu_item{
-    /* width: 200px; */
-    color: black;
-    line-height: 60px;
-    font-size: 20px;
-}
-/* ------------------------------------------ */
-
-
 
 
 </style>
+

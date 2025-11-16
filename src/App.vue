@@ -43,20 +43,19 @@ function handleSwitchPage(page) {
 </script>
 
 <template>
-  <div class="container">
-    <nav class="menu">
-      <div class="logo" @click="showHomePage">二手書系統</div>
-      <ul>
-        <!-- 如果已登入，顯示登出 -->
-        <template v-if="isLoggedIn">
-          <!-- 👇 只有當不是賣家頁面時才顯示購物車 -->
-          <li 
-            v-if="currentPage !== 'seller'" 
-            @click="showShoppingCartPage"
-          >
-            購物車
-          </li>
+  <div class="App_container  ">
+    <nav class="menu  navbar bg-body-tertiary navbar bg-body-tertiary  navbar-expand-lg bg-body-tertiary fixed-top">
 
+      <div class="logo" @click="showHomePage">
+        二手書系統
+      </div>
+      <ul>
+        <li @click="showShoppingCartPage">
+          購物車
+          <i class="bi bi-cart4"></i>
+        </li>
+        <!-- 如果已登入，顯示登出 -->
+        <template v-if="isLoggedIn" class="menu_item">
           <li @click="logout">登出</li>
           <li @click="showMemberAreaPage">會員專區</li>
         </template>
@@ -69,6 +68,12 @@ function handleSwitchPage(page) {
       </ul>
     </nav>
   </div>
+
+
+  
+
+
+
 
   <!-- 根據 currentPage 顯示不同畫面 -->
   <Home v-if="currentPage === 'home'" />  
@@ -83,12 +88,14 @@ function handleSwitchPage(page) {
   />
   <Login 
     v-else-if="currentPage === 'login'" 
-    @login-success="isLoggedIn = true; currentPage = 'home';" 
+    @login-success="isLoggedIn = true;currentPage = 'home';" 
   />
   <Register 
     v-else-if="currentPage === 'register'"
     @register-success="currentPage = 'login'"  
   />
+
+
 
 
 
@@ -107,14 +114,12 @@ function handleSwitchPage(page) {
     list-style: none;
 }
 
-.container{
-    background: plum;
+.menu{
+    background: rgb(216, 210, 211)  !important;
     padding: 0 50px;
 }
-.container .menu {
-    /* width: 100%;
-    height: 100px; */
-    background: plum;
+.App_container .menu {
+    background: rgb(216, 210, 211);
     display: flex;
     flex-direction: row; 
     flex-wrap: wrap; 
@@ -122,22 +127,20 @@ function handleSwitchPage(page) {
     padding: 0 20px;
     align-items: center; /*控制垂直對其*/
 }
-.container .logo{
+.App_container .logo{
     color: black;
     font-size: 50px;
     padding: 10px 0px;
 }
-.container .logo:hover,.container li:hover{
+.App_container .logo:hover,.App_container li:hover{
   color: aliceblue;
+  font-weight: bold;
 }
 
-.container ul{
+.App_container ul{
     display: flex; 
     gap: 10px;
 }
-
-
-/* ------------------------------------------ */
 
 
 
