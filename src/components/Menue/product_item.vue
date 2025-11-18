@@ -32,6 +32,7 @@
                 <th scope="col">幾成新</th>
                 <th scope="col">有無筆記</th>
                 <th scope="col">書況</th>
+                <th scope="col">上架時間</th>
                 <th scope="col">二手價</th>
                 <th scope="col">購買</th>
                 </tr>
@@ -43,17 +44,19 @@
                 <td>六成新</td>
                 <td>有</td>
                 <td>有泡過水</td>
+                <td>2025/1/1</td>
                 <td>100元</td>
                 <td><button class="btn btn-primary btn-sm"><i class="bi bi-cart4"></i></button></td>     
                 </tr>
             </tbody>
             <tbody>
                 <tr>
-                <th scope="row">1</th>
-                <td>貓咪賣家</td>
-                <td>六成新</td>
+                <th scope="row">2</th>
+                <td>狗狗賣家</td>
+                <td>五成新</td>
                 <td>有</td>
-                <td>有泡過水</td>
+                <td>無</td>
+                <td>2025/1/1</td>
                 <td>100元</td>
                 <td><button class="btn btn-primary btn-sm"><i class="bi bi-cart4"></i></button></td>     
                 </tr>

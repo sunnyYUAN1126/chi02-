@@ -1,11 +1,14 @@
 <script setup>
 import { ref } from "vue"
-import Login from './components/Menue/login.vue'
+import UserLogin from './components/Menue/UserLogin.vue'
 import Register from "./components/Menue/register.vue"
 import Home from "./components/Menue/home.vue"
 import Shopping_cart from "./components/Menue/shopping_cart.vue"
-import Buyer_menue from "./components/Buyer/menue.vue"
-import Seller_menue from "./components/Seller/menue.vue"
+import Buyer_menue from "./components/User/menue.vue"
+import AdminLogin from "./components/Menue/AdminLogin.vue"
+import Adminmenue from "./components/Administrator/menue.vue"
+
+
 
 const currentPage = ref("home") // 預設顯示首頁
 const isLoggedIn = ref(false)   // 是否登入的狀態（false=未登入） 
@@ -13,12 +16,19 @@ const isLoggedIn = ref(false)   // 是否登入的狀態（false=未登入）
 // 三個切換方法
 function showHomePage() {
   currentPage.value = "home";
+  isLoggedIn.value = true;
 }
 function showLoginPage() {
   currentPage.value = "login";
 }
 function showRegisterPage() {
   currentPage.value = "register";
+}
+
+// 登入成功
+function handleLoginSuccess() {
+  currentPage.value = "home";
+  isLoggedIn.value = true;
 }
 // 登出
 function logout() {
@@ -37,9 +47,17 @@ function showMemberAreaPage(){
   currentPage.value = "Member_Area";
 }
 
-function handleSwitchPage(page) {
-  currentPage.value = page
+
+
+
+//管理員
+function showAdministratorAreaPage(){
+  currentPage.value = "AtorAreaPage";
 }
+function handleAdminLoginSuccess() {
+  currentPage.value = "adminHome";
+}
+
 </script>
 
 <template>
@@ -58,13 +76,19 @@ function handleSwitchPage(page) {
         <template v-if="isLoggedIn" class="menu_item">
           <li @click="logout">登出</li>
           <li @click="showMemberAreaPage">會員專區</li>
+
+          
+
         </template>
 
         <!-- 如果沒登入，顯示登入、註冊 -->
         <template v-else class="menu_item">
           <li @click="showLoginPage">登入</li>
-          <li @click="showRegisterPage">註冊</li>
+          <!-- <li @click="showRegisterPage">註冊</li> -->
         </template>
+
+        <!-- 管理員 -->
+        <li @click="showAdministratorAreaPage">管理員</li>
       </ul>
     </nav>
   </div>
@@ -79,21 +103,27 @@ function handleSwitchPage(page) {
   <Home v-if="currentPage === 'home'" />  
   <Shopping_cart v-if="currentPage === 'shopping_cart'" />
   <Buyer_menue 
-    v-if="currentPage === 'Member_Area'" 
-    @switchPage="handleSwitchPage"
+    v-if="currentPage === 'Member_Area'"  
   />  
-  <Seller_menue 
-    v-if="currentPage === 'seller'" 
-    @switchPage="handleSwitchPage"
-  />
-  <Login 
+ <AdminLogin 
+  v-if="currentPage === 'AtorAreaPage'"
+  @admin-login-success="handleAdminLoginSuccess"
+/>
+<Adminmenue 
+  v-if="currentPage === 'adminHome'"
+/>
+  <UserLogin 
     v-else-if="currentPage === 'login'" 
-    @login-success="isLoggedIn = true;currentPage = 'home';" 
+    @login-success="handleLoginSuccess" 
+    @login-Register="currentPage = 'register'"
   />
   <Register 
     v-else-if="currentPage === 'register'"
     @register-success="currentPage = 'login'"  
   />
+
+
+  
 
 
 

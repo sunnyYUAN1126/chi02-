@@ -1,23 +1,9 @@
 <script setup>
-import history from './history.vue'
-import order from './order.vue'
+import review from './review.vue'
 
-
-// 宣告要發射的事件名稱
-const emit = defineEmits(['switchPage'])
-
-// 賣家專區
-function showSelleraPage() {
-  // 發送事件給父層，帶參數 "seller"
-  emit('switchPage', 'seller')
-}
-
-
-// 目前顯示哪個頁面
 import { ref } from 'vue'
-const currentPage = ref('order') // 預設顯示訂單交易
+const currentPage = ref('review')
 
-// 切換頁面
 function switchPage(page) {
   currentPage.value = page
 }
@@ -27,19 +13,14 @@ function switchPage(page) {
   <div class="buyer_container">
     <nav class="menu2">
       <ul>
-        <h3>買家專區</h3>
-        <li class="menu_item" @click="switchPage('order')">訂單查詢</li>
-        <li class="menu_item" @click="switchPage('history')">交易歷史</li>
-        <li class="menu_item" @click="showSelleraPage">賣家專區</li>
+        <h3>管理員</h3>
+        <li class="menu_item" @click="switchPage('review')">書籍審核</li>
       </ul>
-    </nav> 
+    </nav>
 
-    <!-- 主內容區 -->
     <div class="content">
-      <order v-show="currentPage === 'order'" />
-      <history v-show="currentPage === 'history'" />
+      <review v-show="currentPage === 'review'" />
     </div>
-
   </div>
 </template>
 
@@ -52,6 +33,7 @@ function switchPage(page) {
 
 .buyer_container{
   display: flex;
+  margin: 100px 0 0 0;
 }
 
 
@@ -74,8 +56,4 @@ function switchPage(page) {
     font-size: 20px;
 }
 /* ------------------------------------------ */
-
-
-
-
-</style>
+</style >
