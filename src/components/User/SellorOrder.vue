@@ -1,177 +1,146 @@
 <template>
-  <div class="p-4">
-    <!-- 選單切換 -->
-    <div class="mb-4">
-      <button @click="currentTab = 'current'" :class="{'font-bold': currentTab === 'current'}">目前訂單</button>
-      <button @click="currentTab = 'history'" :class="{'font-bold': currentTab === 'history'}">歷史訂單</button>
+  <div class="p-6 bg-gray-100 min-h-screen" >
+    <!-- 切換按鈕 -->
+    <div class="mb-6 space-x-4" style="margin: 50px;">
+      <button
+        @click="currentTab = 'current'"
+        :class="currentTab === 'current' ? 'bg-black text-white' : 'bg-gray-300 text-black'"
+        class="px-4 py-2 rounded shadow"
+      >
+        目前訂單
+      </button>
+      <button
+        @click="currentTab = 'history'"
+        :class="currentTab === 'history' ? 'bg-black text-white' : 'bg-gray-300 text-black'"
+        class="px-4 py-2 rounded shadow"
+      >
+        交易歷史
+      </button>
     </div>
 
-    <!-- 訂單表格 -->
-    <table v-if="currentTab === 'current'" border="1" cellpadding="5">
-      <thead>
-        <tr>
-          <th>項目</th>
-          <th>訂單編號</th>
-          <th>訂單用戶</th>
-          <th>商品數量</th>
-          <th>訂單金額</th>
-          <th>面交日期</th>
-          <th>面交時間</th>
-          <th>訂單狀態</th>
-          <th>下單日期</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(order, index) in currentOrders" :key="order.id">
-          <td>{{ index + 1 }}</td>
-          <td>{{ order.orderNo }}</td>
-          <td>{{ order.user }}</td>
-          <td>{{ order.productCount }}</td>
-          <td>{{ order.amount }}</td>
-          <td>{{ order.date }}</td>
-          <td>{{ order.time }}</td>
-          <td>
-            <select v-model="order.status" @change="handleStatusChange(order)">
-              <option>待面交</option>
-              <option>完成</option>
-              <option>取消</option>
-            </select>
-          </td>
-          <td>{{ order.orderDate }}</td>
-          <td>
-            <button @click="viewDetail(order)">明細</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- 目前訂單 -->
+    <div v-show="currentTab === 'current'" class="overflow-x-auto mb-8">
+      <h3 class="text-xl font-bold mb-4">目前訂單</h3>
+      <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="py-2 px-4 text-left">訂單編號</th>
+            <th class="py-2 px-4 text-left">訂單用戶</th>
+            <th class="py-2 px-4 text-left">書籍名稱</th>
+            <th class="py-2 px-4 text-left">isbn</th>
+            <th class="py-2 px-4 text-left">訂單金額</th>
+            <th class="py-2 px-4 text-left">面交地點</th>
+            <th class="py-2 px-4 text-left">面交日期</th>
+            <th class="py-2 px-4 text-left">面交時間</th>
+            <th class="py-2 px-4 text-left">訂單狀態</th>
+            <th class="py-2 px-4 text-left">下單日期</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="order in currentOrders" :key="order.id" class="border-b hover:bg-gray-50">
+            <td class="py-2 px-4">{{ order.orderNo }}</td>
+            <td class="py-2 px-4">{{ order.user }}</td>
+            <td class="py-2 px-4">{{ order.bookName }}</td>
+            <td class="py-2 px-4">{{ order.isbn }}</td>
+            <td class="py-2 px-4">{{ order.amount }}</td>
+            <td class="py-2 px-4">{{ order.location }}</td>
+            <td class="py-2 px-4">{{ order.date }}</td>
+            <td class="py-2 px-4">{{ order.time }}</td>
+            <td class="py-2 px-4">
+              <select 
+                v-model="order.status" 
+                @change="handleStatusChange(order)" 
+                :disabled="order.status !== '代面交'"
+                class="border rounded px-2 py-1"
+              >
+                <option>代面交</option>
+                <option>交易完成</option>
+                <option>取消</option>
+              </select>
+            </td>
+            <td class="py-2 px-4">{{ order.orderDate }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <!-- 歷史訂單表格 -->
-<table v-if="currentTab === 'history'" border="1" cellpadding="5">
-  <thead>
-    <tr>
-      <th>項目</th>
-      <th>訂單編號</th>
-      <th>訂單用戶</th>
-      <th>商品數量</th>
-      <th>訂單金額</th>
-      <th>面交日期</th>
-      <th>面交時間</th>
-      <th>訂單狀態</th>
-      <th>下單日期</th>
-      <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="(order, index) in historyOrders" :key="order.id">
-      <td>{{ index + 1 }}</td>
-      <td>{{ order.orderNo }}</td>
-      <td>{{ order.user }}</td>
-      <td>{{ order.productCount }}</td>
-      <td>{{ order.amount }}</td>
-      <td>{{ order.date }}</td>
-      <td>{{ order.time }}</td>
-      <td>{{ order.status }}</td>
-      <td>{{ order.orderDate }}</td>
-      <td>
-        <button @click="viewDetail(order)">明細</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-    <!-- 明細彈窗 -->
-    <div v-if="selectedOrder" class="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
-      <div class="bg-white p-6 rounded-lg w-1/2">
-        <h3 class="text-lg font-bold mb-4">訂單 {{ selectedOrder.orderNo }} 明細</h3>
-        <table border="1" cellpadding="5" class="w-full mb-4">
-          <thead>
-            <tr>
-              <th>商品名稱</th>
-              <th>價錢</th>
-              <th>數量</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in selectedOrder.items" :key="item.name">
-              <td>{{ item.name }}</td>
-              <td>{{ item.price }}</td>
-              <td>{{ item.quantity }}</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="2">總計</td>
-              <td>{{ selectedOrder.items.reduce((sum, i) => sum + i.price * i.quantity, 0) }}</td>
-            </tr>
-          </tfoot>
-        </table>
-        <button @click="selectedOrder = null">關閉</button>
-      </div>
+    <!-- 歷史訂單 -->
+    <div v-show="currentTab === 'history'" class="overflow-x-auto">
+      <h3 class="text-xl font-bold mb-4">交易歷史</h3>
+      <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="py-2 px-4 text-left">訂單編號</th>
+            <th class="py-2 px-4 text-left">訂單用戶</th>
+            <th class="py-2 px-4 text-left">書籍名稱</th>
+            <th class="py-2 px-4 text-left">isbn</th>
+            <th class="py-2 px-4 text-left">訂單金額</th>
+            <th class="py-2 px-4 text-left">面交地點</th>
+            <th class="py-2 px-4 text-left">面交日期</th>
+            <th class="py-2 px-4 text-left">面交時間</th>
+            <th class="py-2 px-4 text-left">訂單狀態</th>
+            <th class="py-2 px-4 text-left">下單日期</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="order in historyOrders" :key="order.id" class="border-b hover:bg-gray-50">
+            <td class="py-2 px-4">{{ order.orderNo }}</td>
+            <td class="py-2 px-4">{{ order.user }}</td>
+            <td class="py-2 px-4">{{ order.bookName }}</td>
+            <td class="py-2 px-4">{{ order.isbn }}</td>
+            <td class="py-2 px-4">{{ order.amount }}</td>
+            <td class="py-2 px-4">{{ order.location }}</td>
+            <td class="py-2 px-4">{{ order.date }}</td>
+            <td class="py-2 px-4">{{ order.time }}</td>
+            <td class="py-2 px-4">
+              <span 
+                :class="{
+                  'text-yellow-600': order.status === '代面交',
+                  'text-green-600': order.status === '交易完成',
+                  'text-red-600': order.status === '取消'
+                }"
+                class="font-semibold"
+              >
+                {{ order.status }}
+              </span>
+            </td>
+            <td class="py-2 px-4">{{ order.orderDate }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-
-  
-
 </template>
 
 <script setup>
 import { reactive, ref } from 'vue';
 
+const currentTab = ref('current'); // current / history
+
 const currentOrders = reactive([
-  { 
-    id: 1, 
-    orderNo: 'No.1', 
-    user: 'seam', 
-    productCount: 2, 
-    amount: 300, 
-    date: '2025/11/1', 
-    time: '上午11:00', 
-    status: '待面交', 
-    orderDate: '2025/10/1',
-    items: [
-      { name: '貓咪', price: 200, quantity: 1 },
-      { name: '狗狗', price: 100, quantity: 1 },
-    ]
-  },
+  { id: 1, orderNo: 'No.1', user: 'seam', bookName: '資料庫系統概論', isbn: '9789865023456', amount: 350, location: '台北車站', date: '2025/11/10', time: '上午10:00', status: '代面交', orderDate: '2025/10/25' },
+  { id: 2, orderNo: 'No.2', user: 'luna', bookName: 'Java 程式設計', isbn: '9789864349281', amount: 420, location: '中山捷運站', date: '2025/11/12', time: '下午2:00', status: '代面交', orderDate: '2025/10/28' },
+  { id: 3, orderNo: 'No.3', user: 'sunny', bookName: 'Python 入門指南', isbn: '9789863471120', amount: 280, location: '板橋車站', date: '2025/11/15', time: '下午4:00', status: '代面交', orderDate: '2025/10/30' },
 ]);
 
 const historyOrders = reactive([
-  { 
-    id: 2, 
-    orderNo: 'No.5', 
-    user: 'sunny', 
-    productCount: 5, 
-    amount: 600, 
-    date: '2025/10/10', 
-    time: '下午5:00', 
-    status: '完成', 
-    orderDate: '2025/10/1',
-    items: [
-      { name: '書A', price: 100, quantity: 3 },
-      { name: '書B', price: 150, quantity: 2 },
-    ]
-  },
+  { id: 4, orderNo: 'No.4', user: 'mimi', bookName: '計算機概論', isbn: '9789863124989', amount: 300, location: '淡水捷運站', date: '2025/09/10', time: '下午3:00', status: '交易完成', orderDate: '2025/09/01' },
+  { id: 5, orderNo: 'No.5', user: 'alex', bookName: '網頁設計 HTML+CSS', isbn: '9789861234567', amount: 250, location: '士林夜市入口', date: '2025/09/15', time: '晚上7:00', status: '交易完成', orderDate: '2025/09/05' },
+  { id: 6, orderNo: 'No.6', user: 'ruby', bookName: '作業系統 OS', isbn: '9789863128741', amount: 400, location: '新竹火車站', date: '2025/09/20', time: '上午11:30', status: '交易完成', orderDate: '2025/09/10' },
+  { id: 7, orderNo: 'No.7', user: 'tommy', bookName: '資料結構（新版）', isbn: '9789863217894', amount: 380, location: '台大校門口', date: '2025/10/05', time: '下午5:00', status: '取消', orderDate: '2025/09/28' },
+  { id: 8, orderNo: 'No.8', user: 'cindy', bookName: '統計學入門', isbn: '9789861123341', amount: 300, location: '高雄巨蛋', date: '2025/10/08', time: '下午1:00', status: '取消', orderDate: '2025/09/29' },
+  { id: 9, orderNo: 'No.9', user: 'enzo', bookName: '演算法（進階版）', isbn: '9789863125587', amount: 500, location: '台中火車站', date: '2025/10/10', time: '下午6:00', status: '取消', orderDate: '2025/10/01' },
 ]);
 
-const currentTab = ref('current');
-const selectedOrder = ref(null);
-
 function handleStatusChange(order) {
-  if (order.status === '完成' || order.status === '取消') {
-    const action = order.status === '完成' ? '完成' : '取消';
-    const confirmed = confirm(`你確定要將訂單 ${order.orderNo} 設為「${action}」嗎？`);
+  if (order.status === '交易完成' || order.status === '取消') {
+    const confirmed = confirm(`你確定要將訂單 ${order.orderNo} 設為「${order.status}」嗎？`);
     if (!confirmed) {
-      order.status = '待面交';
+      order.status = '代面交';
       return;
     }
     currentOrders.splice(currentOrders.indexOf(order), 1);
     historyOrders.push(order);
-    currentTab.value = 'history';
   }
-}
-
-function viewDetail(order) {
-  selectedOrder.value = order;
 }
 </script>

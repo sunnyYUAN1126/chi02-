@@ -16,6 +16,19 @@
           <input class="form-control" v-model="form.title" required />
         </div>
 
+        <!-- 🔥 新增：分類 -->
+        <div class="mb-3">
+          <label class="form-label">分類：</label>
+          <select class="form-select" v-model="form.category" required>
+            <option disabled value="">請選擇分類</option>
+            <option value="文學與人文類">文學與人文類</option>
+            <option value="社會科學類">社會科學類</option>
+            <option value="商業與管理類">商業與管理類</option>
+            <option value="理學類">理工與資訊類</option>
+            <option value="醫學與健康類">醫學與健康類</option>
+          </select>
+        </div>
+
         <!-- 成新 & 筆記 -->
         <div class="row mb-3">
           <div class="col">
@@ -48,7 +61,7 @@
           <textarea class="form-control" v-model="form.description" rows="3" />
         </div>
 
-        <!-- 上架日期 (不可編輯) & 二手價 -->
+        <!-- 上架日期 & 二手價 -->
         <div class="row mb-3">
           <div class="col">
             <label class="form-label">上架日期：</label>
@@ -56,7 +69,7 @@
           </div>
           <div class="col">
             <label class="form-label">二手價：</label>
-            <input class="form-control" v-model="form.price" min="0" />
+            <input class="form-control" type="number" v-model="form.price" min="0" />
           </div>
         </div>
 
@@ -68,7 +81,11 @@
 
         <!-- 圖片預覽 -->
         <div class="mb-3 d-flex gap-3 flex-wrap">
-          <div v-for="(img, index) in imagePreviews" :key="index" class="position-relative">
+          <div
+            v-for="(img, index) in imagePreviews"
+            :key="index"
+            class="position-relative"
+          >
             <img
               :src="img"
               alt="preview"
@@ -86,7 +103,7 @@
           </div>
         </div>
 
-        <!-- 提交按鈕 -->
+        <!-- 提交 -->
         <div class="text-center">
           <button class="btn btn-primary px-5">新增書籍</button>
         </div>
@@ -98,25 +115,22 @@
 <script setup>
 import { reactive, ref } from "vue"
 
-// 系統自動判定當天日期
-const today = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
+const today = new Date().toISOString().slice(0, 10)
 
-// 表單資料
 const form = reactive({
   isbn: "",
   title: "",
+  category: "",     // ✅ 新增：分類
   condition: "",
   notes: "",
   description: "",
-  uploadTime: today, // 系統自動填當天日期
+  uploadTime: today,
   price: ""
 })
 
-// 圖片資料
 const images = ref([])
 const imagePreviews = ref([])
 
-// 上傳圖片，支援多選
 function handleFiles(e) {
   const files = Array.from(e.target.files)
   for (let file of files) {
@@ -133,14 +147,17 @@ function handleFiles(e) {
   }
 }
 
-// 移除單張圖片
 function removeImage(index) {
   images.value.splice(index, 1)
   imagePreviews.value.splice(index, 1)
 }
 
-// 提交表單
 function submitBook() {
+  if (!form.category) {
+    alert("請選擇分類！")
+    return
+  }
+
   if (images.value.length === 0) {
     alert("請至少上傳一張圖片！")
     return

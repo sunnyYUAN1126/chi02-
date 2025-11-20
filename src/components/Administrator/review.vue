@@ -4,20 +4,27 @@
     <table class="table table-hover table-bordered text-center align-middle">
       <thead class="table-dark">
         <tr>
-          <th>會員</th>
+          <th>會員帳號</th>
+          <th>ISBN</th>
+          <th>書名</th>
+          <th>分類</th>
           <th>幾成新</th>
           <th>有無筆記</th>
-          <th>書況</th>
-          <th>上架時間</th>
+          <th>書況描述</th>
+          <th>上架日期</th>
           <th>二手價</th>
           <th>圖片</th>
           <th>審核</th>
+          <th>管理員備註</th>
         </tr>
       </thead>
 
       <tbody>
         <tr v-for="(book, index) in books" :key="index">
           <td>{{ book.user }}</td>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.category }}</td>
           <td>{{ book.condition }}</td>
           <td>{{ book.notes }}</td>
           <td>{{ book.status }}</td>
@@ -36,6 +43,9 @@
             <button class="btn btn-success btn-sm me-2" @click="approve(book)">同意</button>
             <button class="btn btn-danger btn-sm" @click="reject(book)">不同意</button>
           </td>
+          <td>
+            <input type="text" v-model="book.adminNote" placeholder="備註" class="form-control form-control-sm" />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -48,6 +58,9 @@ import { ref } from "vue"
 const books = ref([
   {
     user: "user001",
+    isbn: "9789861234560",
+    title: "資料庫系統概論",
+    category: "商業與管理類",
     condition: "九成新",
     notes: "無筆記",
     status: "良好",
@@ -55,11 +68,16 @@ const books = ref([
     price: "$250",
     images: [
       "https://via.placeholder.com/60x60?text=封面1",
-      "https://via.placeholder.com/60x60?text=封面2"
-    ]
+      "https://via.placeholder.com/60x60?text=封面2",
+      "https://via.placeholder.com/60x60?text=封面3"
+    ],
+    adminNote: ""
   },
   {
     user: "user002",
+    isbn: "9789866543210",
+    title: "Java 程式設計",
+    category: "社會科學類",
     condition: "七成新",
     notes: "有筆記",
     status: "普通",
@@ -68,8 +86,9 @@ const books = ref([
     images: [
       "https://via.placeholder.com/60x60?text=封面1",
       "https://via.placeholder.com/60x60?text=封面2"
-    ]
-  },
+    ],
+    adminNote: ""
+  }
 ])
 
 const approve = (book) => {
