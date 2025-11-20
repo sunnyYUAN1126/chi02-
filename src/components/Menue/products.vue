@@ -1,196 +1,231 @@
 <script setup>
 import { ref } from 'vue'
 
-// ⭐ 每個商品都是獨立的（包含書籍 + 賣家）
+// 模擬商品資料
 const products = ref([
   {
     id: 1,
+    name: '特殊傳說Ⅲ vol.09',
+    author: '護玄',
+    publisher: '蓋亞文化',
+    pubDate: '2024/10/16',
+    price: 299,
     isbn: '9786263841253',
-    bookName: '特殊傳說Ⅲ vol.09',
-    seller: '貓咪賣家',
-    condition: '六成新',
-    note: '有',
-    status: '有泡過水，有點皺',
-    date: '2025/1/1',
-    price: 100,
-    images: [
-      'https://via.placeholder.com/300?text=1',
-      'https://via.placeholder.com/300?text=2',
-      'https://via.placeholder.com/300?text=3',
-      'https://via.placeholder.com/300?text=4',
+    stock: 3,
+    sold: 10,
+    img: 'https://via.placeholder.com/300x300',
+    sellers: [
+      {
+        name: '貓咪賣家',
+        condition: '六成新',
+        note: '有',
+        status: '有泡過水',
+        date: '2025/1/1',
+        price: 100,
+        images: [
+          'https://via.placeholder.com/100x100?text=1',
+          'https://via.placeholder.com/100x100?text=2',
+          'https://via.placeholder.com/100x100?text=3',
+          'https://via.placeholder.com/100x100?text=4'
+        ]
+      },
+      {
+        name: '狗狗賣家',
+        condition: '五成新',
+        note: '有',
+        status: '無',
+        date: '2025/1/1',
+        price: 100,
+        images: [
+          'https://via.placeholder.com/100x100?text=A',
+          'https://via.placeholder.com/100x100?text=B',
+          'https://via.placeholder.com/100x100?text=C',
+          'https://via.placeholder.com/100x100?text=D'
+        ]
+      }
     ]
   },
   {
     id: 2,
-    isbn: '9786263841253',
-    bookName: '特殊傳說Ⅲ vol.09',
-    seller: '狗狗賣家',
-    condition: '五成新',
-    note: '有',
-    status: '正常無損壞',
-    date: '2025/1/1',
-    price: 120,
-    images: [
-      'https://via.placeholder.com/300?text=A',
-      'https://via.placeholder.com/300?text=B',
-      'https://via.placeholder.com/300?text=C',
-      'https://via.placeholder.com/300?text=D',
-    ]
-  },
-  {
-    id: 3,
+    name: '魔法書Ⅱ vol.05',
+    author: '某作者',
+    publisher: '某出版社',
+    pubDate: '2023/05/01',
+    price: 200,
     isbn: '9781234567890',
-    bookName: '魔法書Ⅱ vol.05',
-    seller: '小明',
-    condition: '九成新',
-    note: '無',
-    status: '保存良好',
-    date: '2025/2/1',
-    price: 180,
-    images: [
-      'https://via.placeholder.com/300?text=X',
-      'https://via.placeholder.com/300?text=Y',
-      'https://via.placeholder.com/300?text=Z',
-      'https://via.placeholder.com/300?text=W',
+    stock: 5,
+    sold: 20,
+    img: 'https://via.placeholder.com/300x300',
+    sellers: [
+      {
+        name: '小明',
+        condition: '九成新',
+        note: '無',
+        status: '良好',
+        date: '2025/2/1',
+        price: 180,
+        images: [
+          'https://via.placeholder.com/100x100?text=X1',
+          'https://via.placeholder.com/100x100?text=X2',
+          'https://via.placeholder.com/100x100?text=X3',
+          'https://via.placeholder.com/100x100?text=X4'
+        ]
+      },
+      {
+        name: '忠明',
+        condition: '九成新',
+        note: '無',
+        status: '良好',
+        date: '2025/2/1',
+        price: 180,
+        images: [
+          'https://via.placeholder.com/100x100?text=X1',
+          'https://via.placeholder.com/100x100?text=X2',
+          'https://via.placeholder.com/100x100?text=X3',
+          'https://via.placeholder.com/100x100?text=X4'
+        ]
+      },
+      {
+        name: '大明',
+        condition: '九成新',
+        note: '無',
+        status: '良好',
+        date: '2025/2/1',
+        price: 180,
+        images: [
+          'https://via.placeholder.com/100x100?text=X1',
+          'https://via.placeholder.com/100x100?text=X2',
+          'https://via.placeholder.com/100x100?text=X3',
+          'https://via.placeholder.com/100x100?text=X4'
+        ]
+      }
     ]
   }
 ])
 
-// 控制頁面
+// 控制頁面狀態
 const showDetail = ref(false)
 const selectedProduct = ref(null)
 
-// 進入詳細頁
+// 點商品卡切換詳細頁
 function viewDetail(product) {
   selectedProduct.value = product
   showDetail.value = true
 }
 
-// 返回首頁
+// 返回列表頁
 function goBack() {
   selectedProduct.value = null
   showDetail.value = false
 }
-
-// ⭐ 點圖片放大
-const showImage = ref(false)
-const bigImage = ref('')
-
-function openImage(img) {
-  bigImage.value = img
-  showImage.value = true
-}
-
-function closeImage() {
-  showImage.value = false
-}
 </script>
 
 <template>
-  <!-- ⭐ 商品列表：每個賣家的上架都是獨立商品卡 -->
-  <div v-if="!showDetail" class="row row-cols-1 row-cols-md-4 g-4 " style="margin: 50px;">
-
-    <div
-      class="col"
-      v-for="product in products"
-      :key="product.id"
-    >
-      <div class="card shadow-sm" @click="viewDetail(product)" style="cursor:pointer">
-        <img :src="product.images[0]" class="card-img-top" style="height: 300px;" alt="商品圖片">
-
+  <!-- 商品列表 -->
+  <div v-if="!showDetail" class="apple row row-cols-1 row-cols-md-3 g-4">
+    <div class="col" v-for="product in products" :key="product.id">
+      <div class="card" @click="viewDetail(product)" style="cursor:pointer">
+        <img :src="product.img" class="card-img-top" alt="商品圖片">
         <div class="card-body">
-          <h5 class="card-title">{{ product.bookName }}</h5>
-          <p class="card-text">賣家：{{ product.seller }}</p>
-          <p class="card-text">ISBN：{{ product.isbn }}</p>
-          <p class="card-text fw-bold text-primary">二手價：{{ product.price }} 元</p>
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">原定價: {{ product.price }}元</p>
+          <p class="card-text">庫存: {{ product.stock }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 商品詳細頁 -->
+  <div v-else class="apple1 card mx-auto my-3" style="width: 70%;">
+    <button class="btn btn-secondary mb-3" @click="goBack">← 返回列表</button>
+
+    <div class="d-flex">
+      <img :src="selectedProduct.img" style="width: 40%; object-fit: cover;" alt="商品圖片">
+      <div class="flex-grow-1">
+        <div class="card-body">
+          <h5 class="card-title">{{ selectedProduct.name }}</h5>
+          <p class="card-text">作者: {{ selectedProduct.author }}</p>
+          <p class="card-text">出版社: {{ selectedProduct.publisher }}</p>
+          <p class="card-text">出版日期: {{ selectedProduct.pubDate }}</p>
+          <p class="card-text">原定價: {{ selectedProduct.price }}元</p>
+          <p class="card-text">ISBN: {{ selectedProduct.isbn }}</p>
+          <p class="card-text">庫存: {{ selectedProduct.stock }}</p>
+          <p class="card-text">銷售量: {{ selectedProduct.sold }}</p>
         </div>
       </div>
     </div>
 
-  </div>
+    <!-- 商品販售狀態 -->
+    <div class="pt-5">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>賣家</th>
+            <th>幾成新</th>
+            <th>有無筆記</th>
+            <th>書況</th>
+            <th>上架時間</th>
+            <th>二手價</th>
+            <th>商品圖片 (4 張)</th>
+            <th>購買</th>
+          </tr>
+        </thead>
 
-  <!-- ⭐ 詳細頁：單一賣家商品 -->
-  <div v-else class="apple1 card mx-auto p-4" style="width: 70%;">
+        <tbody>
+          <tr v-for="(seller, index) in selectedProduct.sellers" :key="index">
+            <th scope="row">{{ index + 1 }}</th>
+            <td>{{ seller.name }}</td>
+            <td>{{ seller.condition }}</td>
+            <td>{{ seller.note }}</td>
+            <td>{{ seller.status }}</td>
+            <td>{{ seller.date }}</td>
+            <td>{{ seller.price }}元</td>
 
-    <button class="btn btn-secondary mb-3" @click="goBack">← 返回</button>
+            <!-- ⭐ 每個賣家 4 張圖片 -->
+            <td>
+              <div style="display: flex; gap: 5px;">
+                <img
+                  v-for="(img, i) in seller.images"
+                  :key="i"
+                  :src="img"
+                  style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;"
+                >
+              </div>
+            </td>
 
-    <h4>{{ selectedProduct.bookName }}</h4>
-    <p>ISBN：{{ selectedProduct.isbn }}</p>
-    <p class="fw-bold">{{ selectedProduct.seller }} 的商品</p>
-
-    <div class="d-flex gap-2 mb-4">
-      <img
-        v-for="(img, index) in selectedProduct.images"
-        :key="index"
-        :src="img"
-        class="detail-img"
-        @click="openImage(img)"
-        style="cursor: zoom-in;"
-      >
+            <td>
+              <button class="btn btn-primary btn-sm">
+                <i class="bi bi-cart4"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <p>幾成新：{{ selectedProduct.condition }}</p>
-    <p>有無筆記：{{ selectedProduct.note }}</p>
-    <p>書況描述：{{ selectedProduct.status }}</p>
-    <p>上架時間：{{ selectedProduct.date }}</p>
-
-    <h4 class="text-primary fw-bold">售價：{{ selectedProduct.price }} 元</h4>
-
-    <button class="btn btn-primary w-100 mt-3">
-      <i class="bi bi-cart4"></i> 加入購物車
-    </button>
-
-  </div>
-
-  <!-- ⭐ 放大圖片 Modal -->
-  <div
-    v-if="showImage"
-    class="image-modal"
-    @click="closeImage"
-  >
-    <img :src="bigImage" class="image-modal-content">
   </div>
 </template>
 
 <style scoped>
-.detail-img {
-  width: 23%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-  background: #eee;
-}
-
-.card-body {
-  background: rgb(245, 245, 245);
-}
-
-.row {
-  padding-top: 120px;
-}
-
-.apple1 {
-  margin-top: 150px;
-}
-
-/* ⭐ 放大圖片 modal */
-.image-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
+img {
   width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  cursor: zoom-out;
+  height: 300px;
+  background: rgb(255, 254, 254);
 }
-
-.image-modal-content {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 10px;
+.card-body {
+  background: rgb(241, 241, 241);
+}
+.row-cols-1 {
+  padding: 100px;
+}
+.card-text {
+  margin: 12px;
+}
+.row {
+  padding-top: 180px;
+}
+.apple1 {
+  padding-top: 150px;
 }
 </style>
