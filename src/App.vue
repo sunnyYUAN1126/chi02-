@@ -53,7 +53,7 @@ function adminLogout() {
 <template>
   <div class="App_container">
     <!-- Navbar -->
-    <nav class="menu navbar bg-body-tertiary navbar-expand-lg fixed-top">
+    <nav class="menu navbar  navbar-expand-lg fixed-top">
       <div class="logo" @click="showHomePage">二手書系統</div>
       <ul>
         <li @click="showShoppingCartPage">購物車 <i class="bi bi-cart4"></i></li>
@@ -72,11 +72,11 @@ function adminLogout() {
 
         <!-- 都沒登入 -->
         <template v-else>
-          <li @click="showLoginPage">登入</li>
+          <li @click="showLoginPage">會員登入</li>
         </template>
 
         <!-- 只有管理員沒登入時才顯示 -->
-        <li v-if="!adminIsLoggedIn" @click="showAdministratorAreaPage">管理員</li>
+        <li v-if="!adminIsLoggedIn" @click="showAdministratorAreaPage">管理員登入</li>
       </ul>
     </nav>
 
@@ -99,7 +99,7 @@ function adminLogout() {
 }
 
 .menu {
-  background: rgb(136, 133, 134);
+  background: rgb(212, 211, 211);
   padding: 0 50px;
   display: flex;
   justify-content: space-between;
@@ -122,4 +122,6 @@ function adminLogout() {
   display: flex;
   gap: 10px;
 }
+
+
 </style>

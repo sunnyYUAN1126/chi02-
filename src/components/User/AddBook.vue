@@ -17,7 +17,7 @@
         </div>
 
         <!-- 🔥 新增：分類 -->
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label class="form-label">分類：</label>
           <select class="form-select" v-model="form.category" required>
             <option disabled value="">請選擇分類</option>
@@ -27,7 +27,7 @@
             <option value="理學類">理工與資訊類</option>
             <option value="醫學與健康類">醫學與健康類</option>
           </select>
-        </div>
+        </div> -->
 
         <!-- 成新 & 筆記 -->
         <div class="row mb-3">

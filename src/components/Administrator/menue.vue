@@ -11,49 +11,88 @@ function switchPage(page) {
 
 <template>
   <div class="buyer_container">
-    <nav class="menu2">
-      <ul>
-        <h3>管理員</h3>
-        <li class="menu_item" @click="switchPage('review')">書籍審核</li>
-      </ul>
+
+    <!-- ⬅️ 側邊欄：Bootstrap nav flex-column 風格 -->
+    <nav class="nav flex-column side-nav">
+
+      <h5 class="menu-title">管理員</h5>
+
+      <a class="nav-link"
+         :class="{ active: currentPage === 'review' }"
+         @click="switchPage('review')">
+        書籍審核
+      </a>
+
+      <a class="nav-link"
+         :class="{ active: currentPage === 'review1' }"
+         @click="switchPage('review')">
+        新增圖書館
+      </a>
+
     </nav>
 
+    <!-- 主要內容 -->
     <div class="content">
       <review v-show="currentPage === 'review'" />
     </div>
+
   </div>
 </template>
 
 <style scoped>
-*{
-    padding: 0;
-    margin: 0;
-    list-style: none;
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
-.buyer_container{
+.buyer_container {
   display: flex;
-  margin: 100px 0 0 0;
+  margin-top: 100px;
 }
 
+/* ----- 側邊欄：Bootstrap nav flex-column 風格 ----- */
+.side-nav {
+  width: 140px;
+  height: 100%;
+  padding: 20px 10px;
+  background: #f8f9fa;
+  border-right: 1px solid #ddd;
+  border-radius: 10px;
+}
 
-.buyer_container .menu2{
-  background: rgb(232, 240, 121);
-  padding: 2px;
-  width: 100px;
-  text-align: center;
+.menu-title {
+  margin-bottom: 12px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #6c757d;
 }
-.buyer_container .menu2>ul>.menu_item{
-  border: 1px solid plum;
+
+/* nav-link 樣式 */
+.side-nav .nav-link {
+  font-size: 18px;
+  color: #333;
+  padding: 12px 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
 }
-.buyer_container .menu2>ul>.menu_item:hover {
-  background-color: pink; /* 滑鼠移過來會變色 */
+
+.side-nav .nav-link:hover {
+  background-color: #ffe0f0;
+  color: #d63384;
 }
-.buyer_container .menu_item{
-    /* width: 200px; */
-    color: black;
-    line-height: 60px;
-    font-size: 20px;
+
+/* active：當前頁面 */
+.side-nav .nav-link.active {
+  background-color: #ffd6ef;
+  color: #c2185b;
+  font-weight: bold;
 }
-/* ------------------------------------------ */
-</style >
+
+/* 右側內容 */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+</style>

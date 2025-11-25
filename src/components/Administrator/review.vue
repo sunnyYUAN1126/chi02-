@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-4">
-    <h2 class="mb-4">📚 管理員書籍審核</h2>
+    <h2 class="mb-4">賣家上架的二手書審核</h2>
     <table class="table table-hover table-bordered text-center align-middle">
       <thead class="table-dark">
         <tr>
