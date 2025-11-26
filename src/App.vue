@@ -24,6 +24,7 @@ function showRegisterPage() { currentPage.value = "register" }
 function showShoppingCartPage() { currentPage.value = "shopping_cart" }
 function showMemberAreaPage() { currentPage.value = "Member_Area" }
 function showAdministratorAreaPage() { currentPage.value = "AtorAreaPage" }
+function showAdminHomePage() { currentPage.value = "adminHome" }
 
 // ------------------------
 // 使用者登入/登出
@@ -61,7 +62,7 @@ function adminLogout() {
         <!-- 管理員登入時 -->
         <template v-if="adminIsLoggedIn">
           <li @click="adminLogout">管理員登出</li>
-          <li @click="showAdministratorAreaPage">管理員後台</li>
+          <li @click="showAdminHomePage">管理員後台</li>
         </template>
 
         <!-- 一般會員登入時 -->
@@ -76,7 +77,7 @@ function adminLogout() {
         </template>
 
         <!-- 只有管理員沒登入時才顯示 -->
-        <li v-if="!adminIsLoggedIn" @click="showAdministratorAreaPage">管理員登入</li>
+        <li v-if="!adminIsLoggedIn && !isLoggedIn" @click="showAdministratorAreaPage">管理員登入</li>
       </ul>
     </nav>
 

@@ -26,7 +26,7 @@ function switchPage(page) {
       <a class="nav-link"
          :class="{ active: currentPage === 'review1' }"
          @click="switchPage('review')">
-        新增圖書館
+        新增書目
       </a>
 
     </nav>
