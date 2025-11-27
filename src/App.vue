@@ -10,6 +10,7 @@ import Adminmenue from "./components/Administrator/menue.vue"
 
 // 頁面狀態
 const currentPage = ref("home")
+const homeRef = ref(null)
 
 // 登入狀態
 const isLoggedIn = ref(false)        // 一般會員登入
@@ -18,7 +19,15 @@ const adminIsLoggedIn = ref(false)   // 管理員登入
 // ------------------------
 // 頁面切換方法
 // ------------------------
-function showHomePage() { currentPage.value = "home" }
+function showHomePage() { 
+  currentPage.value = "home"
+  // 重置商品詳細頁，回到商品列表
+  setTimeout(() => {
+    if (homeRef.value && homeRef.value.$refs.productRef) {
+      homeRef.value.$refs.productRef.goBack()
+    }
+  }, 0)
+}
 function showLoginPage() { currentPage.value = "login" }
 function showRegisterPage() { currentPage.value = "register" }
 function showShoppingCartPage() { currentPage.value = "shopping_cart" }
@@ -82,7 +91,7 @@ function adminLogout() {
     </nav>
 
     <!-- 頁面內容 -->
-    <Home v-if="currentPage === 'home'" />
+    <Home ref="homeRef" v-if="currentPage === 'home'" />
     <Shopping_cart v-if="currentPage === 'shopping_cart'" />
     <Buyer_menue v-if="currentPage === 'Member_Area'" />
     <AdminLogin v-if="currentPage === 'AtorAreaPage'" @admin-login-success="handleAdminLoginSuccess" />

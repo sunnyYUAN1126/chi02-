@@ -174,6 +174,11 @@ function goBack() {
   selectedProduct.value = null
   showDetail.value = false
 }
+
+// 暴露 goBack 方法給父組件使用
+defineExpose({
+  goBack
+})
 </script>
 
 <template>
