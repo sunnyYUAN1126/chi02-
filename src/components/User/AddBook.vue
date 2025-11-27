@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <div class="card p-4 shadow-sm">
-      <h2 class="mb-4 text-center">📚 新增書籍</h2>
+      <h2 class="mb-4 text-center">新增書籍</h2>
 
       <form @submit.prevent="submitBook">
         <!-- ISBN -->
@@ -16,10 +16,22 @@
           <input class="form-control" v-model="form.title" required />
         </div>
 
+        <!-- 新增：書籍作者 -->
+        <div class="mb-3">
+          <label class="form-label">書籍作者：</label>
+          <input class="form-control" v-model="form.author" required />
+        </div>
+
+        <!-- 新增：書籍出版社 -->
+        <div class="mb-3">
+          <label class="form-label">書籍出版社：</label>
+          <input class="form-control" v-model="form.publisher" required />
+        </div>
+
         <!-- 🔥 新增：分類 -->
-        <!-- <div class="mb-3">
+        <div class="mb-3">
           <label class="form-label">分類：</label>
-          <select class="form-select" v-model="form.category" required>
+          <select class="form-select bg-light-gray" v-model="form.category" required>
             <option disabled value="">請選擇分類</option>
             <option value="文學與人文類">文學與人文類</option>
             <option value="社會科學類">社會科學類</option>
@@ -27,13 +39,13 @@
             <option value="理學類">理工與資訊類</option>
             <option value="醫學與健康類">醫學與健康類</option>
           </select>
-        </div> -->
+        </div>
 
         <!-- 成新 & 筆記 -->
         <div class="row mb-3">
           <div class="col">
             <label class="form-label">幾成新：</label>
-            <select class="form-select" v-model="form.condition">
+            <select class="form-select bg-light-gray" v-model="form.condition">
               <option value="9">9成新</option>
               <option value="8">8成新</option>
               <option value="7">7成新</option>
@@ -47,7 +59,7 @@
           </div>
           <div class="col">
             <label class="form-label">是否有筆記：</label>
-            <select class="form-select" v-model="form.notes">
+            <select class="form-select bg-light-gray" v-model="form.notes">
               <option value="none">無筆記</option>
               <option value="few">少量筆記</option>
               <option value="many">大量筆記</option>
@@ -61,15 +73,21 @@
           <textarea class="form-control" v-model="form.description" rows="3" />
         </div>
 
-        <!-- 上架日期 & 二手價 -->
+        <!-- 二手價 -->
+        <div class="mb-3">
+          <label class="form-label">二手價：</label>
+          <input class="form-control" type="number" v-model="form.price" min="0" />
+        </div>
+
+        <!-- 上架日期 & 數量 -->
         <div class="row mb-3">
           <div class="col">
             <label class="form-label">上架日期：</label>
             <input type="date" class="form-control" v-model="form.uploadTime" disabled />
           </div>
           <div class="col">
-            <label class="form-label">二手價：</label>
-            <input class="form-control" type="number" v-model="form.price" min="0" />
+            <label class="form-label">數量：</label>
+            <input class="form-control" type="number" v-model="form.quantity" disabled />
           </div>
         </div>
 
@@ -120,12 +138,15 @@ const today = new Date().toISOString().slice(0, 10)
 const form = reactive({
   isbn: "",
   title: "",
+  author: "",       // ✅ 新增：書籍作者
+  publisher: "",    // ✅ 新增：書籍出版社
   category: "",     // ✅ 新增：分類
   condition: "",
   notes: "",
   description: "",
   uploadTime: today,
-  price: ""
+  price: "",
+  quantity: 1
 })
 
 const images = ref([])
@@ -177,5 +198,8 @@ function submitBook() {
 }
 .position-relative {
   position: relative;
+}
+.bg-light-gray {
+  background-color: #f2f2f2;
 }
 </style>

@@ -178,11 +178,13 @@ function goBack() {
 
 <template>
   <!-- 商品列表 -->
-  <div v-if="!showDetail" class="apple row row-cols-1 row-cols-md-3 g-4">
+  <div class="page-background">
+    <div class="content-wrapper">
+      <div v-if="!showDetail" class="apple row row-cols-1 row-cols-md-3 g-4">
     <div class="col" v-for="product in products" :key="product.id">
       <div class="card" @click="viewDetail(product)" style="cursor:pointer">
         <div style="text-align: center;">
-          <img :src="product.img" alt="商品圖片" style="height: 200px; width: auto; display: inline-block;">
+          <img :src="product.img" alt="商品圖片" style="height: 200px; width: 100%; object-fit: contain;">
         </div>
         <div class="card-body">
           <h5 class="card-title">{{ product.name }}</h5>
@@ -195,7 +197,7 @@ function goBack() {
 
   <!-- 商品詳細頁 -->
   <div v-else class="apple1 card mx-auto my-3" style="width: 70%;">
-    <button class="btn btn-secondary mb-3" @click="goBack">← 返回列表</button>
+    <button class="btn btn-secondary mb-3" @click="goBack" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">← 返回列表</button>
 
     <div class="d-flex">
       <!-- 圖片圖片~ -->
@@ -265,6 +267,8 @@ function goBack() {
         </tbody>
       </table>
     </div>
+    </div>
+    </div>
   </div>
 
   <!-- 放大圖片 Modal -->
@@ -296,5 +300,17 @@ img {
 }
 .apple1 {
   padding-top: 150px;
+}
+.page-background {
+  background-color: #bbbbbb69; /* SkyBlue */
+  min-height: 100vh;
+  padding: 0;
+}
+.content-wrapper {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
 }
 </style>
