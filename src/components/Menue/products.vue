@@ -197,7 +197,7 @@ function goBack() {
 
   <!-- 商品詳細頁 -->
   <div v-else class="apple1 card mx-auto my-3" style="width: 70%;">
-    <button class="btn btn-secondary mb-3" @click="goBack" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">← 返回列表</button>
+    <button class="btn btn-secondary mb-3" @click="goBack" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"><i class="bi bi-arrow-up-left-circle"></i> 返回列表</button>
 
     <div class="d-flex">
       <!-- 圖片圖片~ -->
@@ -285,9 +285,15 @@ img {
   width: 100%;
   height: 300px;
   background: rgb(255, 254, 254);
+  border-radius: 30px 30px 0 0;
 }
+.card{
+  border-radius: 30px;
+}
+
 .card-body {
   background: rgb(241, 241, 241);
+  border-radius: 0 0 30px 30px;
 }
 .row-cols-1 {
   padding: 100px;

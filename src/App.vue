@@ -55,7 +55,7 @@ function adminLogout() {
   <div class="App_container">
     <!-- Navbar -->
     <nav class="menu navbar  navbar-expand-lg fixed-top">
-      <div class="logo" @click="showHomePage">二手書系統</div>
+      <div class="logo" @click="showHomePage">二手書網站 <i class="bi bi-book"></i> </div>
       <ul>
         <li @click="showShoppingCartPage">購物車 <i class="bi bi-cart4"></i></li>
 
