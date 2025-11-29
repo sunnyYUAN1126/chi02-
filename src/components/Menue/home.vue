@@ -1,5 +1,5 @@
 <script setup>
-import { ref, provide, defineExpose } from 'vue';
+import { ref, provide } from 'vue';
 import product from './products.vue';
 
 // 暴露重置商品詳細頁的方法
