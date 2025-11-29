@@ -59,22 +59,22 @@ onMounted(async () => {
               <h2 class="mb-0">會員登入</h2>
             </div>
 
-            <div class="input-group mb-4 mt-4 mx-auto" style="width: 70%;">
+            <div class="input-group my-3 mx-auto" style="width: 70%;">
               <span class="input-group-text d-flex justify-content-center align-items-center" style="width: 20%;">帳號</span>
               <input type="text" class="form-control text-center" v-model="username" placeholder="Username">
             </div>
 
-            <div class="input-group mb-4 mx-auto" style="width: 70%;">
+            <div class="input-group mb-3 mx-auto" style="width: 70%;">
               <span class="input-group-text d-flex justify-content-center align-items-center" style="width: 20%;">密碼</span>
               <input type="password" class="form-control text-center" v-model="password" placeholder="Password">
             </div>
 
-            <div class="mb-4 mt-4">
+            <div class="my-2 d-flex justify-content-center">
               <button class="btn btn-primary" @click="handleLogin">登入</button>
             </div>
 
             <!-- 註冊 -->
-            <div class="mb-4 mt-4 d-flex justify-content-center align-items-center gap-2">
+            <div class="my-2 d-flex justify-content-center align-items-center gap-2">
                 <p class="mb-0">沒有帳號？</p>
                 <button class="btn btn-secondary" @click="handleRegister">註冊</button>
             </div>
@@ -133,7 +133,6 @@ onMounted(async () => {
   display: flex;
   justify-content: center; /* 水平置中 */
   align-items: center;     /* 垂直置中 */
-  margin: 0 auto;
 }
 .login_container button:hover{
   color: white;
