@@ -159,9 +159,18 @@ const showDetail = ref(false)
 const selectedProduct = ref(null)
 
 // 放大圖片控制
-const zoomImg = ref(null)
-function openZoom(img) { zoomImg.value = img }
-function closeZoom() { zoomImg.value = null }
+const showModal = ref(false)
+const currentImage = ref("")
+
+function openModal(img) {
+  currentImage.value = img
+  showModal.value = true
+}
+
+function closeModal() {
+  showModal.value = false
+  currentImage.value = ""
+}
 
 // 點商品卡切換詳細頁
 function viewDetail(product) {
@@ -200,12 +209,11 @@ defineExpose({
     </div>
   </div>
 
+
+
   <!-- 商品詳細頁 -->
-
-
-
   <div v-else class="card2 mx-auto my-3 p-4 shadow-lg" style="width: 80%; background: white; border-radius: 20px;">
-    <button class="btn btn-outline-secondary mb-3" @click="goBack" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"><i class="bi bi-arrow-left"></i> 返回列表</button>
+    <button class="btn btn-outline-secondary mb-3" @click="goBack" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"><i class="bi bi-arrow-up-left-circle"></i> 返回列表</button>
 
     <div class="d-flex gap-4 align-items-start">
       <!-- 圖片圖片~ -->
@@ -256,8 +264,9 @@ defineExpose({
                       v-for="(img, i) in seller.images"
                       :key="i"
                       :src="img"
-                      style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; cursor:pointer;"
-                      @click="openZoom(img)"
+                      class="img-thumbnail object-fit-cover"
+                      style="width: 60px; height: 60px; cursor:pointer;"
+                      @click="openModal(img)"
                     >
                   </div>
                 </td>
@@ -276,12 +285,20 @@ defineExpose({
   </div>
 
   <!-- 放大圖片 Modal -->
-  <div v-if="zoomImg" @click="closeZoom"
-     style="position:fixed;top:0;left:0;width:100%;height:100%;
-            background:rgba(0,0,0,0.7);display:flex;justify-content:center;
-            align-items:center;cursor:pointer;z-index:9999;">
-  <img :src="zoomImg" style="height:500px; width:auto;">
-</div>
+  <!-- 放大圖片 Modal -->
+  <div v-if="showModal" class="modal fade show" tabindex="-1" style="display: block; background-color: rgba(0,0,0,0.5);" @click.self="closeModal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">圖片預覽</h5>
+          <button type="button" class="btn-close" @click="closeModal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img :src="currentImage" class="img-fluid" alt="Enlarged view">
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -296,8 +313,9 @@ defineExpose({
 }
 
 .card-body {
-  background: rgb(241, 241, 241);
+  background: rgb(255, 255, 255);
   border-radius: 0 0 30px 30px;
+  padding: 50px 0 0 20px;
 }
 
 .card-text {
