@@ -5,23 +5,41 @@ import { ref } from "vue"
 const emit = defineEmits(["register-success"])
 
 const username = ref("")
-const email = ref("")
 const department = ref("")
 const studentId = ref("")
 const password = ref("")
 
-function handleRegister() {
+async function handleRegister() {
   // 這裡可以先做一些基本檢查
-  if (!username.value || !email.value || !department.value || !studentId.value || !password.value) {
+  if (!username.value || !department.value || !studentId.value || !password.value) {
     alert("請填寫完整註冊資料！")
     return
   }
 
-  // 假裝成功註冊  alert() 是 JavaScript 內建的「彈出通知視窗」
-  alert("註冊成功！請登入。")
+  try {
+    const response = await fetch("http://localhost:8080/api/users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        account: username.value,
+        password: password.value,
+        studentId: studentId.value,
+        department: department.value,
+      }),
+    })
 
-  // 通知父層回到登入畫面
-  emit("register-success")
+    if (response.ok) {
+      alert("註冊成功！請登入。")
+      emit("register-success")
+    } else {
+      alert("註冊失敗，請稍後再試。")
+    }
+  } catch (error) {
+    console.error("Registration error:", error)
+    alert("連線錯誤，請檢查網路或伺服器狀態。")
+  }
 }
 </script>
 
@@ -37,12 +55,6 @@ function handleRegister() {
   <div class="input-group mb-4 mt-4 mx-auto" style="width: 70%;">
     <span class="input-group-text d-flex justify-content-center align-items-center" style="width: 30%;">帳號</span>
     <input type="text" class="form-control text-center" v-model="username" placeholder="Username">
-  </div>
-
-  <!-- 電子郵件 -->
-  <div class="input-group mb-4  mx-auto" style="width: 70%;">
-    <span class="input-group-text d-flex justify-content-center align-items-center" style="width: 30%;">電子郵件</span>
-    <input type="text" class="form-control text-center" v-model="email" placeholder="Email">
   </div>
 
   <!-- 系所 -->

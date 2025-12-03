@@ -42,9 +42,18 @@ function handleLoginSuccess() {
   isLoggedIn.value = true
   currentPage.value = "home"
 }
-function logout() {
-  isLoggedIn.value = false
-  currentPage.value = "home"
+async function logout() {
+  try {
+    await fetch("http://localhost:8080/api/users/logout", {
+      method: "POST",
+    })
+  } catch (error) {
+    console.error("Logout error:", error)
+  } finally {
+    // 無論後端是否成功，前端都執行登出
+    isLoggedIn.value = false
+    currentPage.value = "home"
+  }
 }
 
 // ------------------------

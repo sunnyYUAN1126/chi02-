@@ -7,10 +7,30 @@ const emit = defineEmits(["login-success", "login-Register"])
 const username = ref("")
 const password = ref("")
 
-function handleLogin() {
+async function handleLogin() {
   // 簡單模擬登入檢查
   if (username.value && password.value) {
-    emit("login-success") // 通知父層登入成功
+    try {
+      const response = await fetch("http://localhost:8080/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          account: username.value,
+          password: password.value,
+        }),
+      })
+
+      if (response.ok) {
+        emit("login-success") // 通知父層登入成功
+      } else {
+        alert("登入失敗，請檢查帳號密碼！")
+      }
+    } catch (error) {
+      console.error("Login error:", error)
+      alert("連線錯誤，請檢查網路或伺服器狀態。")
+    }
   } else {
     alert("請輸入帳號和密碼！")
   }
